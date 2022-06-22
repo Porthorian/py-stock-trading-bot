@@ -19,10 +19,15 @@ def initializeLogger():
 initializeLogger()
 
 import tradingbot
+import json
 
 def main():
-    scanner = tradingbot.scanner.Scanner()
-    #scanner.get_potentials()
+    file = open('keys.json')
+    attributes = json.load(file)
+    file.close()
+
+    scanner = tradingbot.scanner.Scanner(attributes['ApiKey'], attributes['ApiSecret'], attributes['BaseURL'])
+    scanner.get_potentials()
 
 if __name__ == "__main__":
     main()
