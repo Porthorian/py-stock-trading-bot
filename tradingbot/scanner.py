@@ -1,4 +1,5 @@
 import logging
+import time
 import alpaca_trade_api as tradeapi
 
 class Scanner:
@@ -38,6 +39,8 @@ class Scanner:
 
 			stop += 1
 			if stop >= 50:
-				break
+				logging.debug('Sleeping 30 seconds')
+				time.sleep(30)
+				stop = 0
 
 		logging.info(high_volume_stocks)
