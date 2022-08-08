@@ -21,7 +21,7 @@ class Scanner:
 		assets = {}
 		for asset in active_assets:
 			if asset.exchange not in ['NASDAQ', 'NYSE'] or not asset.tradable: continue
-			iterators[asset.symbol] = self.api.get_bars_iter(asset.symbol, tradeapi.TimeFrame.Hour)
+			iterators[asset.symbol] = self.api.get_bars_iter(asset.symbol, tradeapi.TimeFrame.Minute)
 			assets[asset.symbol] = asset
 
 		high_volume_stocks = {}
@@ -34,13 +34,15 @@ class Scanner:
 			for bar in bars:
 				total_volume += bar.v
 
-			if total_volume >= 10000:
+			logging.debug('%s total volume %s' % (symbol, str(total_volume)))
+
+			if total_volume >= 5_000_000:
 				high_volume_stocks[symbol] = total_volume
 
 			stop += 1
 			if stop >= 50:
-				logging.debug('Sleeping 30 seconds')
-				time.sleep(30)
+				logging.debug('Sleeping')
+				time.sleep(10)
 				stop = 0
 
 		logging.info(high_volume_stocks)
